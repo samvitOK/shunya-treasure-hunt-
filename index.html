@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shunya Treasure Hunt - Find the Premium Booty!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Seaweed+Script&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Seaweed Script', cursive;
+            text-align: center;
+            background: #000; /* Pure black during transitions */
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #ffd700;
+            overflow-x: hidden;
+        }
+
+        body.main-bg {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+
+        /* Enhanced Random Glitch Effects */
+        .glitch-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .glitch-text {
+            font-family: 'Pirata One', cursive;
+            font-size: 4em;
+            color: #00ff00;
+            text-shadow: 2px 2px 0 #ff0000;
+            margin-bottom: 30px;
+            position: relative;
+            animation: textGlitch 0.8s infinite;
+        }
+
+        @keyframes textGlitch {
+            0%, 100% { 
+                transform: translate(0);
+                opacity: 1;
+            }
+            10% { 
+                transform: translate(-2px, -2px);
+                opacity: 0.8;
+            }
+            20% { 
+                transform: translate(2px, 2px);
+                opacity: 0.9;
+            }
+            30% { 
+                transform: translate(-1px, 1px);
+                opacity: 0.7;
+            }
+            40% { 
+                transform: translate(1px, -1px);
+                opacity: 1;
+            }
+            50% { 
+                transform: translate(0);
+                opacity: 0.6;
+            }
+            60% { 
+                transform: translate(3px, 0);
+                opacity: 0.8;
+            }
+            70% { 
+                transform: translate(-3px, 0);
+                opacity: 0.9;
+            }
+            80% { 
+                transform: translate(0, 3px);
+                opacity: 0.7;
+            }
+            90% { 
+                transform: translate(0, -3px);
+                opacity: 1;
+            }
+        }
+
+        /* Green Lightning Effects */
+        .lightning {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, #00ff00 50%, transparent 70%);
+            opacity: 0;
+            animation: lightningFlash 5s linear;
+        }
+
+        .lightning-1 {
+            animation-delay: 1.2s;
+            transform: skewX(-15deg);
+        }
+
+        .lightning-2 {
+            animation-delay: 2.8s;
+            transform: skewX(10deg);
+        }
+
+        .lightning-3 {
+            animation-delay: 3.6s;
+            transform: skewX(-5deg);
+        }
+
+        @keyframes lightningFlash {
+            0%, 100% { opacity: 0; }
+            1% { opacity: 0.8; }
+            2% { opacity: 0; }
+            3% { opacity: 0.9; }
+            4% { opacity: 0; }
+            5% { opacity: 0.7; }
+            6% { opacity: 0; }
+        }
+
+        /* Random Scan Lines */
+        .scan-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+            opacity: 0;
+        }
+
+        .scan-line-1 {
+            top: 20%;
+            animation: randomScan1 4.5s infinite;
+        }
+
+        .scan-line-2 {
+            top: 50%;
+            animation: randomScan2 4.5s infinite;
+        }
+
+        .scan-line-3 {
+            top: 80%;
+            animation: randomScan3 4.5s infinite;
+        }
+
+        @keyframes randomScan1 {
+            0%, 100% { opacity: 0; }
+            15% { opacity: 1; }
+            30% { opacity: 0; }
+            60% { opacity: 1; }
+            75% { opacity: 0; }
+        }
+
+        @keyframes randomScan2 {
+            0%, 100% { opacity: 0; }
+            25% { opacity: 1; }
+            40% { opacity: 0; }
+            70% { opacity: 1; }
+            85% { opacity: 0; }
+        }
+
+        @keyframes randomScan3 {
+            0%, 100% { opacity: 0; }
+            5% { opacity: 1; }
+            20% { opacity: 0; }
+            45% { opacity: 1; }
+            55% { opacity: 0; }
+            90% { opacity: 1; }
+        }
+
+        /* Random Vertical Lines */
+        .vertical-line {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(to bottom, transparent, #00ff00, transparent);
+            box-shadow: 0 0 15px #00ff00;
+            opacity: 0;
+        }
+
+        .v-line-1 {
+            left: 25%;
+            animation: vertical1 4.5s infinite;
+        }
+
+        .v-line-2 {
+            left: 50%;
+            animation: vertical2 4.5s infinite;
+        }
+
+        .v-line-3 {
+            left: 75%;
+            animation: vertical3 4.5s infinite;
+        }
+
+        @keyframes vertical1 {
+            0%, 100% { opacity: 0; transform: translateX(0); }
+            10% { opacity: 1; transform: translateX(-5px); }
+            20% { opacity: 0; transform: translateX(5px); }
+            50% { opacity: 1; transform: translateX(0); }
+            60% { opacity: 0; transform: translateX(3px); }
+        }
+
+        @keyframes vertical2 {
+            0%, 100% { opacity: 0; transform: translateX(0); }
+            30% { opacity: 1; transform: translateX(8px); }
+            40% { opacity: 0; transform: translateX(-8px); }
+            70% { opacity: 1; transform: translateX(0); }
+            80% { opacity: 0; transform: translateX(-4px); }
+        }
+
+        @keyframes vertical3 {
+            0%, 100% { opacity: 0; transform: translateX(0); }
+            5% { opacity: 1; transform: translateX(6px); }
+            15% { opacity: 0; transform: translateX(-6px); }
+            55% { opacity: 1; transform: translateX(0); }
+            65% { opacity: 0; transform: translateX(2px); }
+        }
+
+        /* Final Black Screen */
+        .final-black {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            opacity: 0;
+            animation: finalBlack 5s linear forwards;
+        }
+
+        @keyframes finalBlack {
+            0%, 80% { opacity: 0; }
+            81% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
+        /* Luffy Smile Transition */
+        .luffy-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: luffyAppear 0.1s 4s forwards;
+        }
+
+        .luffy-smile {
+            font-size: 12em;
+            transform: scale(0);
+            animation: luffyPop 0.3s 4s forwards;
+            filter: drop-shadow(0 0 30px #ffd700);
+        }
+
+        @keyframes luffyAppear {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes luffyPop {
+            0% { 
+                transform: scale(0);
+                opacity: 0;
+            }
+            80% { 
+                transform: scale(1.2);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Black Transition Page */
+        .black-transition {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .transition-title {
+            font-family: 'Pirata One', cursive;
+            font-size: 4em;
+            color: #00ff00;
+            text-shadow: 2px 2px 0 #ff0000;
+            margin-bottom: 50px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
+        .transition-btn {
+            font-family: 'Pirata One', cursive;
+            font-size: 2em;
+            padding: 20px 40px;
+            background: transparent;
+            color: #00ff00;
+            border: 3px solid #00ff00;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ff00;
+            box-shadow: 0 0 20px #00ff00;
+        }
+
+        .transition-btn:hover {
+            background: #00ff00;
+            color: #000;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #00ff00;
+        }
+
+        .noise {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.3"/></svg>');
+            animation: noiseMove 0.2s infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes noiseMove {
+            0%, 100% { transform: translate(0,0); }
+            10% { transform: translate(-5px,-2px); }
+            20% { transform: translate(3px,4px); }
+            30% { transform: translate(-7px,1px); }
+            40% { transform: translate(2px,-3px); }
+            50% { transform: translate(-1px,5px); }
+            60% { transform: translate(4px,-1px); }
+            70% { transform: translate(-3px,-4px); }
+            80% { transform: translate(6px,2px); }
+            90% { transform: translate(-2px,3px); }
+        }
+
+        /* Gold Emoji Filter */
+        .gold-emoji {
+            filter: sepia(1) saturate(5) hue-rotate(5deg) brightness(1);
+        }
+
+        /* Pirate Themed Main Page */
+        .container {
+            max-width: 700px;
+            margin: 20px auto;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="20" y="50" font-family="Pirata One" font-size="30" fill="%23ffd70022">⚓</text></svg>');
+            z-index: -1;
+        }
+
+        h1 {
+            font-family: 'Pirata One', cursive;
+            font-size: 3.5em;
+            color: #ffd700;
+            text-shadow: 3px 3px 0 #8b4513, 6px 6px 0 #000;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-family: 'Seaweed Script', cursive;
+            font-size: 1.8em;
+            color: #ff6b6b;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 0 #000;
+        }
+
+        .clue-box {
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%238b4513" opacity="0.9"/><path d="M10,10 L90,10 L90,90 L10,90 Z" fill="none" stroke="%23ffd700" stroke-width="2"/></svg>');
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            border: 2px dashed #ffd700;
+            font-size: 1.4em;
+            color: #ffd700;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .clue-box.revealed {
+            font-size: 1.8em;
+            padding: 40px;
+            background: rgba(139, 69, 19, 0.95);
+        }
+
+        .clue-box::before {
+            content: "🗺️";
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            font-size: 2em;
+            background: #8b4513;
+            border-radius: 50%;
+            padding: 5px;
+            border: 2px solid #ffd700;
+        }
+
+        .pirate-input {
+            font-family: 'Seaweed Script', cursive;
+            font-size: 1.3em;
+            padding: 15px;
+            margin: 15px;
+            background: rgba(139, 69, 19, 0.8);
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            color: #ffd700;
+            width: 250px;
+            text-align: center;
+        }
+
+        .pirate-btn {
+            font-family: 'Pirata One', cursive;
+            font-size: 1.5em;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #8b4513, #a52a2a);
+            color: #ffd700;
+            border: 3px solid #ffd700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pirate-btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(45deg, #a52a2a, #8b4513);
+            box-shadow: 0 0 20px #ffd700;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .treasure-chest {
+            font-size: 4em;
+            animation: bounce 2s infinite;
+            margin: 20px 0;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Pirate Crew with Gold Emojis */
+        .pirate-crew {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .pirate-item {
+            font-size: 3.5em;
+            animation: float 3s ease-in-out infinite;
+            filter: sepia(1) saturate(5) hue-rotate(5deg) brightness(1) drop-shadow(2px 2px 0 #000);
+        }
+
+        .pirate-item:nth-child(1) { animation-delay: 0s; } /* Treasure */
+        .pirate-item:nth-child(2) { animation-delay: 0.5s; } /* Map */
+        .pirate-item:nth-child(3) { animation-delay: 1s; } /* Spyglass */
+        .pirate-item:nth-child(4) { animation-delay: 1.5s; } /* Anchor */
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .stamp-collection {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .stamp {
+            width: 80px;
+            height: 80px;
+            border: 3px dashed #ffd700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            filter: sepia(1) saturate(5) hue-rotate(5deg) brightness(1);
+        }
+
+        .stamp.collected {
+            border: 3px solid #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.1);
+        }
+
+        .stamp-progress {
+            font-family: 'Pirata One', cursive;
+            font-size: 1.5em;
+            margin: 15px 0;
+            color: #ff6b6b;
+        }
+
+        .numinova-poster {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #ff6b6b;
+            margin: 25px 0;
+        }
+
+        .numinova-title {
+            font-family: 'Pirata One', cursive;
+            font-size: 2.5em;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 0 #000;
+            margin-bottom: 15px;
+        }
+
+        /* Pirate flag stays normal (no gold filter) */
+        .jolly-roger {
+            font-size: 5em;
+            margin: 20px 0;
+            animation: swing 3s ease-in-out infinite;
+        }
+
+        @keyframes swing {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23000"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%23000"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23000"/></svg>');
+            background-size: 1200px 100px;
+            animation: wave 10s linear infinite;
+            z-index: -1;
+        }
+
+        .compass {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            animation: spin 10s linear infinite;
+            filter: sepia(1) saturate(5) hue-rotate(5deg) brightness(1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Random Glitch Screen -->
+    <div id="glitch-screen" class="glitch-container">
+        <!-- Green Lightning Effects -->
+        <div class="lightning lightning-1"></div>
+        <div class="lightning lightning-2"></div>
+        <div class="lightning lightning-3"></div>
+        
+        <!-- Random Scan Lines -->
+        <div class="scan-line scan-line-1"></div>
+        <div class="scan-line scan-line-2"></div>
+        <div class="scan-line scan-line-3"></div>
+        
+        <!-- Random Vertical Lines -->
+        <div class="vertical-line v-line-1"></div>
+        <div class="vertical-line v-line-2"></div>
+        <div class="vertical-line v-line-3"></div>
+        
+        <!-- Final Black Screen -->
+        <div class="final-black"></div>
+        
+        <!-- Noise Overlay -->
+        <div class="noise"></div>
+        
+        <div class="glitch-text">SHUNYA TRANSMISSION</div>
+        <div class="glitch-text" style="font-size:2em; animation-delay:0.2s;">ACCESSING PIRATE NETWORK</div>
+    </div>
+
+    <!-- Luffy Smile Transition -->
+    <div id="luffy-transition" class="luffy-transition hidden">
+        <div class="luffy-smile">😄</div>
+    </div>
+
+    <!-- Black Transition Page -->
+    <div id="black-transition" class="black-transition hidden">
+        <div class="transition-title">SHUNYA TREASURE HUNT</div>
+        <button class="transition-btn" onclick="startTreasureHunt()">SET SAIL</button>
+    </div>
+
+    <div class="compass">🧭</div>
+    
+    <!-- MAIN PAGE -->
+    <div id="main-page" class="container hidden">
+        <div class="pirate-crew">
+            <div class="pirate-item">💰</div> <!-- Treasure -->
+            <div class="pirate-item">🗺️</div> <!-- Map -->
+            <div class="pirate-item">🔍</div> <!-- Spyglass -->
+            <div class="pirate-item">⚓</div> <!-- Anchor -->
+        </div>
+        
+        <div class="jolly-roger">🏴‍☠️</div>
+        <h1>SHUNYA TREASURE HUNT</h1>
+        <div class="subtitle">Seek the Premium Booty!</div>
+
+        <!-- Stamp Collection Display -->
+        <div class="stamp-progress">Stamps Collected: <span id="stamp-count">0</span>/5</div>
+        <div class="stamp-collection">
+            <div class="stamp" id="stamp1">❌</div>
+            <div class="stamp" id="stamp2">❌</div>
+            <div class="stamp" id="stamp3">❌</div>
+            <div class="stamp" id="stamp4">❌</div>
+            <div class="stamp" id="stamp5">❌</div>
+        </div>
+        
+        <div class="clue-box" id="clue-box">
+            <p><strong>READY TO SET SAIL?</strong></p>
+            <p>Embark on an epic treasure hunt adventure across the seven seas!</p>
+            <p>Scan QR codes around campus to collect virtual stamps and reveal clues.</p>
+            <p>Complete all 5 stamps to unlock the ultimate treasure!</p>
+        </div>
+        
+        <button onclick="revealClue()" class="pirate-btn">Set Sail! 🚢</button>
+        
+        <div class="treasure-chest">🗝️</div>
+    </div>
+
+    <div class="waves"></div>
+
+    <script>
+        // Enhanced glitch sequence with proper transitions
+        setTimeout(() => {
+            // Show Luffy smile on black background
+            document.getElementById('luffy-transition').classList.remove('hidden');
+            
+            // After 1 second, transition to black page
+            setTimeout(() => {
+                document.getElementById('glitch-screen').classList.add('hidden');
+                document.getElementById('luffy-transition').classList.add('hidden');
+                document.getElementById('black-transition').classList.remove('hidden');
+            }, 1000);
+            
+        }, 5000);
+
+        function startTreasureHunt() {
+            // Add gradient background only when main page loads
+            document.body.classList.add('main-bg');
+            document.getElementById('black-transition').classList.add('hidden');
+            document.getElementById('main-page').classList.remove('hidden');
+        }
+
+        // Rest of the JavaScript
+        const totalStamps = 5;
+        let collectedStamps = 0;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const scannedStamp = urlParams.get('stamp');
+
+        if (scannedStamp) {
+            collectedStamps = parseInt(scannedStamp);
+            updateStamps();
+        }
+
+        function updateStamps() {
+            document.getElementById('stamp-count').textContent = collectedStamps;
+            
+            for (let i = 1; i <= totalStamps; i++) {
+                const stamp = document.getElementById(`stamp${i}`);
+                if (i <= collectedStamps) {
+                    stamp.innerHTML = '🎵';
+                    stamp.classList.add('collected');
+                }
+            }
+
+            if (collectedStamps === totalStamps) {
+                document.getElementById('clue-box').innerHTML = `
+                    <strong>🏆 ALL STAMPS COLLECTED! 🏆</strong>
+                    <p>You've completed the Spotify collection!</p>
+                    <p>Final Code: <strong style="color:#ff6b6b">SHUNYA2024</strong></p>
+                    <p>Use this code to claim your Spotify Premium treasure!</p>
+                `;
+                document.getElementById('clue-box').classList.add('revealed');
+            }
+        }
+
+        function revealClue() {
+            const clueBox = document.getElementById('clue-box');
+            
+            if (collectedStamps === 0) {
+                clueBox.innerHTML = `
+                    <strong>FIRST CLUE - THE PIRATE'S RIDDLE:</strong>
+                    <p>I have keys but no locks, with space but no room,</p>
+                    <p>You can enter but can't sail away from this tomb.</p>
+                    <p>What treasure am I, in this digital sea?</p>
+                    <p>Find the next QR code to discover me!</p>
+                    <p style="margin-top:15px; font-size:0.8em; color:#ff6b6b">⚔️ Hint: Look near the main entrance ⚔️</p>
+                `;
+            } else if (collectedStamps === 1) {
+                clueBox.innerHTML = `
+                    <strong>SECOND CLUE - NAVIGATE THE SEAS:</strong>
+                    <p>Where knowledge flows like endless waves,</p>
+                    <p>And silent stories fill the caves.</p>
+                    <p>Find the next clue where pages speak,</p>
+                    <p>A treasure hidden for the seek!</p>
+                    <p style="margin-top:15px; font-size:0.8em; color:#ff6b6b">⚔️ Hint: Library area ⚔️</p>
+                `;
+            }
+            
+            clueBox.classList.add('revealed');
+        }
+
+        function simulateStampFind() {
+            if (collectedStamps < totalStamps) {
+                collectedStamps++;
+                updateStamps();
+                revealClue();
+            }
+        }
+
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 's') {
+                simulateStampFind();
+            }
+        });
+    </script>
+</body>
+</html>
